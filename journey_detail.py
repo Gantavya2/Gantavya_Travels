@@ -40,11 +40,18 @@ def displaydetail(desto, desfrom, desdate):
     destoval=desto.get()
     desfromval=desfrom.get()
     desdatevale=desdate.get()
-    busdetailval=cursor.execute("select Operator,Bus_type,Available,Capacity,Fare from local_bus_real where To_dest=? and FROM_dest=? and Journey_date=?",(destoval,desfromval,desdatevale))
-    listofval=busdetailval.fetchall()
-    print(listofval)
-
-
+    busdetailval = cursor.execute("select Operator, Bus_type, Available, Capacity, Fare from local_bus_real where To_dest=? and FROM_dest=? and Journey_date=?", (destoval, desfromval, desdatevale))
+    listofval = busdetailval.fetchall()
+    busch=IntVar()
+    r1=IntVar()
+    busch.set(-1)
+    for i in range(0,len(listofval)):
+        r1=Radiobutton(root,text=f"Bus {i}",variable=busch,value=1).grid(row=i+6,column=13)
+        Label(root,text=f"{listofval[i][0]}",fg="blue2",font="Arial 12 bold").grid(row=i+6,column=14)
+        Label(root,text=f"{listofval[i][1]}",fg="blue2",font="Arial 12 bold").grid(row=i+6,column=15)
+        Label(root,text=f"{listofval[i][2]}/{listofval[i][3]}",fg="blue2",font="Arial 12 bold").grid(row=i+6,column=16)
+        Label(root,text=f"{listofval[i][4]}",fg="blue2",font="Arial 12 bold").grid(row=i+6,column=17)
+        Button(root,text="Proceed to book",command=bookingdetail(listofval,i),bg="pale green").grid(row=i+6,column=20)
 fontFam="Arial"
 root=Tk()
 screen_width = root.winfo_screenwidth()
@@ -83,9 +90,14 @@ cursor.execute('''CREATE TABLE IF NOT EXISTS local_bus_real (
                     Capacity int,
                     Fare int
                 )''')
-with open('busdetail.txt', 'r') as file:
-    for line in file:
-        words=line.split()
-        cursor.execute("INSERT INTO local_bus_real (To_dest, FROM_dest, Journey_date, Operator, Bus_type, Available, Capacity, Fare) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",(words[0], words[1], words[2], words[3], words[4], int(words[5]), int(words[6]), int(words[7])))
-connection.commit()
+cursor.execute("select * from local_bus_real")
+table_exists=cursor.fetchall()
+if not table_exists:
+    with open('busdetail.txt', 'r') as file:
+        for line in file:
+            words=line.split()
+            cursor.execute("INSERT INTO local_bus_real (To_dest, FROM_dest, Journey_date, Operator, Bus_type, Available, Capacity, Fare) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",(words[0], words[1], words[2], words[3], words[4], int(words[5]), int(words[6]), int(words[7])))
+    connection.commit()
+else:
+    pass
 root.mainloop()
