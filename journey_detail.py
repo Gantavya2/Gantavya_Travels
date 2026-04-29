@@ -4,7 +4,33 @@ from PIL import ImageTk,Image
 import sqlite3 as sq
 def finctioncall():
     displaydetail(desto_var, desfrom_var, desdate_var)
+def functioncall2(noseat,listofval,i):
+    askyesornoinfun(noseat,listofval,i)
+def askyesornoinfun(noseatreal,listofval,i):
+    noseatreal1=noseatreal.get()
+    result = askyesno("Fare Confirmation !!", f"Total amount to be paid Rs {noseatreal1*listofval[i][4]}")
 
+def bookingdetail(listofval,i):
+    # useable varibale name_val,v1,noseatreal,mobilenoreal
+    Label(root,text="FILL PASSENGER DETAILS TO BOOK THE BUS TICKET",fg="red",bg="CadetBlue1",font="Arial 30 bold").grid(row=8,columnspan=50,pady=10)
+    Label(root,text="Name:").grid(row=9,column=12)
+    name_var=StringVar()
+    name_val=Entry(root,textvariable=name_var).grid(row=9,column=13)
+    Label(root,text="Gender:").grid(row=9,column=14)
+    v1=StringVar()
+    v1.set("click to select")
+    option=["Male","female"]
+    OptionMenu(root,v1,*option).grid(row=9,column=15)
+    Label(root,text="No of Seats:").grid(row=9,column=16)
+    noseat=IntVar()
+    noseatreal=Entry(root,textvariable=noseat).grid(row=9,column=17)
+    Label(root,text="Mobile no:").grid(row=9,column=18)
+    mobileno=IntVar()
+    mobilenoreal=Entry(root,textvariable=mobileno).grid(row=9,column=19)
+    Label(root,text="Age:").grid(row=9,column=20)
+    age=IntVar()
+    agereal=Entry(root,textvariable=age).grid(row=9,column=21)
+    Button(root,text="Book Seat",command=functioncall2(noseat,listofval,i)).grid(row=9,column=22)
 def displaydetail(desto, desfrom, desdate):
     Label(root,text="Select bus",fg="green4",font="Arial 10 bold").grid(row=5,column=13)
     Label(root,text="Operator",fg="green4",font="Arial 10 bold").grid(row=5,column=14)        
