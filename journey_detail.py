@@ -48,10 +48,11 @@ def askyesornoinfun(name_val,v1,noseat,mobileno,age,val):
                     gender varchar(7),
                     fare int
                 )''')
-    table_Exists1=cursor1.execute("select * from customer_detail_real")
-    if not table_Exists1:
-        cursor1.execute("INSERT INTO customer_detail_real(name,no_of_seat,mobile,age,gander,fare) VALUES(?,?,?,?,?,?)",(nameval,noseatval,mobilval,ageval,v1val,val))
-        connection1.commit()
+    cursor1.execute("INSERT INTO customer_detail_real(name,no_of_seat,mobile_no,age,gender,fare) VALUES(?,?,?,?,?,?)",(nameval,noseatval,mobilval,ageval,v1val,val))
+    connection1.commit()
+    cursor1.execute("select * from customer_detail_real limit 1")
+    listofcustomer=cursor1.fetchall()
+    print(listofcustomer)
 def displaydetail(desto, desfrom, desdate):
     Label(root,text="Select bus",fg="green4",font="Arial 10 bold").grid(row=5,column=13)
     Label(root,text="Operator",fg="green4",font="Arial 10 bold").grid(row=5,column=14)        
@@ -120,5 +121,5 @@ if not table_exists:
             cursor.execute("INSERT INTO local_bus_real (To_dest, FROM_dest, Journey_date, Operator, Bus_type, Available, Capacity, Fare) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",(words[0], words[1], words[2], words[3], words[4], int(words[5]), int(words[6]), int(words[7])))
     connection.commit()
 else:
-    pass
+     print("There is an error in first insertion")
 root.mainloop()
